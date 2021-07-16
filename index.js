@@ -1,37 +1,48 @@
-import http from "http";
+import express from "express";
+import handlebars from "express-handlebars";
 import * as data from './data.js';
-import { parse } from "querystring";
+//import { parse } from "querystring";
 
-http.createServer((req, res) => {
-    let url = req.url.split("?");
-    let query = parse(url[1]);
-    let path = url[0].toLowerCase();
+const app = express();
 
-    switch(path) {
-        case '/':
-            let array = data.getAll();
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            let heroList = (array) ? JSON.stringify(array, null, 2) : "Not found";
-            res.end('List of heroes: ' + "\n" + heroList);
-            break;
-        
-        case '/about':
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.end('About Page');
-            break;
+app.set("port", process.env.PORT || 3000);
+app.use(express.static('./public'));
+app.use(express.urlencoded( { extended: true }));
+app.use(express.json());
 
-        case '/detail':
-            let item = data.getItem(query.name);
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            let result = (item) ? JSON.stringify(item, null, 2) : "Not found";
-            res.end('Found hero(es): ' + query.name + "\n" + result);
-            break; 
-        
-        default:
-            res.writeHead(404, {'Content-Type': 'text/plain'});
-            console.log(query);
-            res.end("ERROR Page not found");
-            break;
-    }
-})
-.listen(process.env.PORT || 3000);
+app.engine('hbs', handlebars({defaultLayout: "main.hbs"}));
+app.set("view engine", "hbs");
+
+//GET Handlers
+app.get('/', (req, res) => {
+    res.render('home', {Heroes: data.getAll()});
+});
+
+app.get('/about', (req, res) => {
+    res.type('text/plain');
+    res.send('About Page');
+});
+
+app.get('/detail', (req, res) => {
+    let result = data.getItem(req.query.name);
+    res.render('details', {
+        name: req.query.name,
+        result
+    });
+});
+
+//POST Handler
+app.post('/detail', (req, res) => {
+    let item = data.getItem(req.body.name);
+    res.render("details", {name: req.body.name, result: item, Heroes: data.getAll()});
+});
+
+//Error Handler
+app.use((req, res) => {
+    res.type('text/plain');
+    res.status(404);
+    res.send('Error: Page not found');
+});
+
+app.listen(app.get('port'), () => {
+});

@@ -1,0 +1,19 @@
+<html>
+
+    <body>
+        <div class="homeLink">
+            <a href="/">Home</a>
+        </div>
+    <hr>
+    {{#if result}}
+        <h2>{{name}}'s Details:</h2>
+        <li>Class: {{result.class}}</li>
+        <li>Alignment: {{result.align}}</li>
+        <li>Level: {{result.level}}</li>
+
+    {{else}}
+        <h2>Error: {{name}} not found</h2>
+    {{/if}}
+    </body>
+
+</html>

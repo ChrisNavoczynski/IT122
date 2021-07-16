@@ -1,0 +1,50 @@
+h1 {
+    color: #9DC88D;
+    font-family: cursive;
+    font-size: 50px;
+    text-align: center;
+}
+
+h2 {
+    color: #9DC88D;
+    font-family: cursive;
+    font-size: 30px;
+    margin-left: 20px
+}
+
+body {
+    background-color: black;
+    color: #9DC88D;
+    font-size: 18px;
+}
+
+a {
+    color: #5d9bec;
+    font-size: 20px;
+    word-spacing: 3px;
+    margin-top: 5px;
+}
+
+a:hover {
+    color: #e05dec;
+    font-size: 20px;
+    word-spacing: 3px;
+    margin-top: 5px;
+}
+
+li:not(:last-child) {
+    margin-left: 30px;
+    margin-bottom: 8px;
+    color: #5d9bec;
+}
+
+.homeLink {
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.copyRight {
+    margin-top: 20px;
+    text-align: center;
+}
