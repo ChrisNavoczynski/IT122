@@ -1,0 +1,12 @@
+<html>
+    <body>
+        <div class="homeLink">
+            <a href="/">Home</a>
+        </div>    
+    {{#if omit}}
+        <h2>The hero {{name}} has been successfully removed</h2>
+    {{else}}
+        <h2>Sorry, no hero named {{name}} is not found</h2>
+    {{/if}}
+    </body>
+</html>

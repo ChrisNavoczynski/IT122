@@ -19,3 +19,12 @@
     - home.dbs
     - details.dbs
 * A public folder was added for the main.css styles
+
+## Week 4 Update:
+* Installed mongoose npm package (required)
+* Installed dotenv package for connection credentials
+* Created a data model schema (required)
+* Updated the home and details routes to database
+* Added information into MongoDB
+#### Extra Credit
+* Added a details route to delete information

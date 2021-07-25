@@ -1,7 +1,6 @@
 import express from "express";
 import handlebars from "express-handlebars";
-import * as data from './data.js';
-//import { parse } from "querystring";
+import { Hero } from './models/hero.js'
 
 const app = express();
 
@@ -14,8 +13,12 @@ app.engine('hbs', handlebars({defaultLayout: "main.hbs"}));
 app.set("view engine", "hbs");
 
 //GET Handlers
-app.get('/', (req, res) => {
-    res.render('home', {Heroes: data.getAll()});
+app.get('/', (req,res) => {
+Hero.find({}).lean()
+  .then((Heroes) => {
+    res.render('home', { Heroes });
+  })
+  .catch(err => next(err));
 });
 
 app.get('/about', (req, res) => {
@@ -23,19 +26,33 @@ app.get('/about', (req, res) => {
     res.send('About Page');
 });
 
-app.get('/detail', (req, res) => {
-    let result = data.getItem(req.query.name);
-    res.render('details', {
-        name: req.query.name,
-        result
+app.get('/detail', (req,res,next) => {
+    Hero.findOne({ name:req.query.name }).lean()
+        .then((hero) => {
+            res.render('details', {result: hero} );
+        })
+        .catch(err => next(err));
+});
+
+app.get('/delete', (req, res,) => {
+    Hero.deleteOne({ name:req.query.name }, (err, result) => {
+        if (err) return next(err);
+        let omit = result.n !== 0;
+        Hero.count((err, total) => {
+            res.type('text/html');
+            res.render('delete', {name: req.query.name, omit: result.n !== 0, total: total } );    
+        });
     });
 });
 
 //POST Handler
-app.post('/detail', (req, res) => {
-    let item = data.getItem(req.body.name);
-    res.render("details", {name: req.body.name, result: item, Heroes: data.getAll()});
-});
+app.post('/detail', (req,res,next) => {
+    Hero.findOne({ name:req.body.name }).lean()
+        .then((hero) => {
+            res.render('details', {result: hero} );
+        })
+        .catch(err => next(err));
+})
 
 //Error Handler
 app.use((req, res) => {
