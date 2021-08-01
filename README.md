@@ -28,3 +28,11 @@
 * Added information into MongoDB
 #### Extra Credit
 * Added a details route to delete information
+
+## Week 5 Update:
+* Installed the cors package (required)
+* Added the following API's:
+    - one <get> for all items
+    - one <get> for a single item
+    - one <delete> for an item
+    - one <add> for an item. (The <add> also includes a <post>)

@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // For security, connectionString should be in a separate file and excluded from git
-const connectionString = process.env.MONGO_CREDENITIALS;
+const connectionString = process.env.MONGO_CREDENTIALS;
 
 mongoose.connect(connectionString, {
     dbName: 'jsprojects',
@@ -23,6 +23,8 @@ const heroSchema = new Schema({
  class: String,
  align: String,
  level: Number
+}, {
+  versionKey: false
 });
 
 export const Hero = mongoose.model('Hero', heroSchema, 'heroes');
