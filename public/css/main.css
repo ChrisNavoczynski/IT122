@@ -32,10 +32,22 @@ a:hover {
     margin-top: 5px;
 }
 
-li:not(:last-child) {
+li {
     margin-left: 30px;
     margin-bottom: 8px;
     color: #5d9bec;
+    font-size: 20px;
+    word-spacing: 3px;
+    margin-top: 5px;
+}
+
+ul {
+    margin-bottom: 8px;
+    color: #5d9bec;
+    font-size: 20px;
+    word-spacing: 3px;
+    margin-top: 5px;
+    cursor: pointer;
 }
 
 .homeLink {
@@ -72,4 +84,5 @@ button {
 
 button:hover {
     background-color: #e05dec;
+    cursor: pointer;
 }

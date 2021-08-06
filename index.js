@@ -15,12 +15,12 @@ app.engine('hbs', handlebars({defaultLayout: "main.hbs"}));
 app.set("view engine", "hbs");
 
 //GET Handlers
-app.get('/', (req,res) => {
-Hero.find({}).lean()
-  .then((Heroes) => {
-    res.render('home', { Heroes });
-  })
-  .catch(err => next(err));
+app.get('/', (req,res,next) => {
+    Hero.find({}).lean()
+      .then((heroes) => {
+        res.render('home', { heroes: JSON.stringify(heroes)});
+    })
+    .catch(err => next(err));
 });
 
 app.get('/about', (req, res) => {

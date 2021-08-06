@@ -5,7 +5,8 @@ let heroes = [
     {name : "Shadow", class : "Rogue", align : "CN", level : 2},
     {name : "Fib", class : "Bard", align : "CN", level : 1},
     {name : "Bow", class : "Ranger", align : "CG", level : 3},
-    {name : "Casta", class : "Sorcerer", align : "LN", level : 2}
+    {name : "Casta", class : "Sorcerer", align : "LN", level : 2},
+    {name : "Jake", class : "Druid", align : "N", level : 3}
 ];
 
 const getAll = () => {

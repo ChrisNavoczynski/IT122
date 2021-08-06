@@ -1,6 +1,35 @@
 <h1>Welcome</h1>
 <hr>
 <h2>Choose your Hero</h2>
+
+<div id="root"></div>
+<script type="text/babel">
+    const heroes = {{{heroes}}}
+    console.log(heroes);
+
+    const showDetail = (event) => {
+        window.location.href = "/detail?name=" + event.target.innerText;
+    }
+
+    const Heroes = (props) => {
+        console.log(props)
+        const listHeroes = props.data.map((hero) =>
+        <li key={hero._id} id={hero._id} onClick={props.clickHandler}>
+            {hero.name}
+        </li>);
+        return <ul>{listHeroes}</ul>
+    }
+
+    ReactDOM.render(
+        <div><Heroes data={heroes} clickHandler={showDetail}/></div>,
+    document.getElementById('root')
+    );
+</script>
+
+{{!-- Old Home handbar --}}
+{{!-- <h1>Welcome</h1>
+<hr>
+<h2>Choose your Hero</h2>
 {{#each Heroes}}
     <li><a href="/detail?name={{name}}">{{name}}</a></li>
-{{/each}}
+{{/each}} --}}
