@@ -41,6 +41,10 @@ li {
     margin-top: 5px;
 }
 
+li:hover {
+    color: #e05dec;
+}
+
 ul {
     margin-bottom: 8px;
     color: #5d9bec;
@@ -48,6 +52,10 @@ ul {
     word-spacing: 3px;
     margin-top: 5px;
     cursor: pointer;
+}
+
+ul:hover {
+    color: #e05dec;
 }
 
 .homeLink {
