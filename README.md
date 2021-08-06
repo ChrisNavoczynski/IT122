@@ -36,3 +36,8 @@
     - one get for a single item
     - one delete for an item
     - one add for an item. (The add also includes a post)
+
+## Week 6 Update:
+* Added React scripts for converting to main.hbs (required)
+* Converted home.hbs page to render the user interface with React
+* Updated server-side HTML with a JSON.stringify() render
