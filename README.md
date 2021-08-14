@@ -41,3 +41,12 @@
 * Added React scripts for converting to main.hbs (required)
 * Converted home.hbs page to render the user interface with React
 * Updated server-side HTML with a JSON.stringify() render
+
+## Week 7 Update:
+* Updated app with a class component (required)
+* State values of data array and the current item selected
+* Added function to set current item based on it being clicked
+* Added function to CLEAR the current item
+* Added render() method that renders existing list components and new detail component
+* Added a form for user input to ADD information
+* Buttons for ADD, CLEAR, and DELETE items when clicked

@@ -1,35 +1,176 @@
-<h1>Welcome</h1>
-<hr>
-<h2>Choose your Hero</h2>
+<html>
+    <link rel="stylesheet" href="/css/main.css">
+<head>
+    <title>Welcome</title>
+    <meta charset="utf-8">
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
+</head>
+<body>
 <div id="root"></div>
+
 <script type="text/babel">
-    const heroes = {{{heroes}}}
-    console.log(heroes);
 
-    const showDetail = (event) => {
-        window.location.href = "/detail?name=" + event.target.innerText;
+    class HeroApp extends React.Component {
+        constructor(props) {
+            super(props);
+
+            this.state = {
+                heroes: {{{heroes}}},
+                filter: "",
+                currHero: {}
+            };
+
+            this.onSearchChange = this.onSearchChange.bind(this);
+            this.onChange = this.onChange.bind(this);
+            this.onSave = this.onSave.bind(this);
+            this.onDelete = this.onDelete.bind(this);
+            this.onClear = this.onClear.bind(this);
+        }
+
+        showDetails(event) {
+            let editHero = this.state.heroes.find((hero) => {
+                return hero._id == event.target.id;
+            });
+            this.setState({currHero: editHero}); 
+        }
+
+        onSearchChange(event) {
+            this.setState({filter: event.target.value.toLowerCase()});
+        }
+
+        onChange(event) {
+            var newHero = this.state.currHero;
+            newHero[event.target.name] = event.target.value;
+            this.setState({currHero: newHero});
+        }
+
+        onSave() {
+            let newHero = this.state.currHero;
+            if (!newHero.name) {
+                return;
+            }
+
+            fetch("/api/v1/add/", {
+                method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newHero)
+            }).then(res => res.json())
+                .then((json) => {
+                let newData;
+                if (!newHero._id) {
+                    newData = this.state.heroes;
+                    newHero._id = json._id;
+                    newData.push(newHero);
+                } else {
+                    newData = this.state.heroes.map((hero) => {
+                        if (hero._id === newHero._id) {
+                            hero = newHero;
+                        }
+                        return hero;
+                    });
+                }
+                this.setState({heroes: newData});
+            });
+        }
+
+        onDelete() {
+            let id = this.state.currHero._id;
+
+            fetch("/api/v1/delete/" + id).then((reply) => {
+                return reply.json();
+            }).then((results) => {
+                const remain = this.state.heroes.filter((hero) => {
+                    return hero._id !== id;
+                });
+                this.setState({heroes: remain, currHero: {} });
+            });
+        }
+
+        onClear() {
+            this.setState({currHero: {} });
+        }
+
+        render() {
+            return (
+                <div>
+                <h1>Welcome</h1>
+                <hr />
+                <h2>Select a Hero or Search for one below!</h2>
+                <SearchForm filter={this.state.filter} change={this.onSearchChange} />
+                    <HeroList
+                        heroes={this.state.heroes}
+                        filter={this.state.filter}
+                        show={this.showDetails.bind(this)}
+                    />
+                    <br />
+                    <hr />
+                    <HeroDetails 
+                        hero={this.state.currHero} 
+                        change={this.onChange} 
+                        save={this.onSave} 
+                        reset={this.onClear} 
+                        delete={this.onDelete} 
+                    />    
+                </div>
+            );
+        }
     }
 
-    const Heroes = (props) => {
-        console.log(props)
-        const listHeroes = props.data.map((hero) =>
-        <li key={hero._id} id={hero._id} onClick={props.clickHandler}>
-            {hero.name}
-        </li>);
-        return <ul>{listHeroes}</ul>
+    const SearchForm = (props) => {
+        return (
+            <div>
+                <input
+                    className="hero-search" 
+                    type="text"
+                    placeholder="Search for a Hero"
+                    value={props.filter}
+                    onChange={props.change}
+                /><p/>    
+            </div>
+        );
     }
 
-    ReactDOM.render(
-        <div><Heroes data={heroes} clickHandler={showDetail}/></div>,
-    document.getElementById('root')
-    );
+    const HeroList = ({heroes, filter, show}) => {
+        const heroItems = heroes.map((hero) => {
+            if (!filter || hero.name.toLowerCase().includes(filter)) {
+                return <li id={hero._id} key={hero.id} onClick={show}>{hero.name}</li>
+            }
+        });
+        return <span id="hero-list"><ul>{heroItems}</ul></span>
+    }
+
+    const HeroDetails = (props) => {
+        return (
+            <span id="hero-details">
+                <h3>Hero Details:</h3>
+                <h4>Edit/Delete Existing Hero or Add a new Hero</h4>
+                <div>
+                <form>
+                    <label>Hero's Name:</label>
+                        <input type="text" name="name" onChange={props.change} placeholder="name" value={props.hero.name || ""} /><p/>
+                    <label>Hero's Class:</label>
+                        <input type="text" name="class" onChange={props.change} placeholder="class" value={props.hero.class || ""} /><p/>
+                    <label>Hero's Alignment:</label>
+                        <input type="text" name="align" onChange={props.change} placeholder="align" value={props.hero.align || ""} /><p/>
+                    <label>Hero's Level:</label>
+                        <input type="text" name="level" onChange={props.change} placeholder="level" value={props.hero.level || ""} /><p/>
+                </form>
+                </div>
+                <br />
+                <div>
+                    <button className="edit-buttons" onClick={props.save}>SAVE</button>
+                    <button className="edit-buttons" onClick={props.reset}>CLEAR</button>
+                    <button className="edit-buttons" onClick={props.delete}>DELETE</button>
+                </div>
+            </span>   
+        );
+    }
+    ReactDOM.render(<HeroApp />, document.getElementById('root'));
+
 </script>
-
-{{!-- Old Home handbar --}}
-{{!-- <h1>Welcome</h1>
-<hr>
-<h2>Choose your Hero</h2>
-{{#each Heroes}}
-    <li><a href="/detail?name={{name}}">{{name}}</a></li>
-{{/each}} --}}
+</body>
+</html>

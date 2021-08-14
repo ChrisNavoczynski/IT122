@@ -12,6 +12,20 @@ h2 {
     margin-left: 20px
 }
 
+h3 {
+    color: #9DC88D;
+    font-family: cursive;
+    font-size: 25px;
+    margin-left: 20px
+}
+
+h4 {
+    color: #9DC88D;
+    font-family: cursive;
+    font-size: 18px;
+    margin-left: 20px
+}
+
 body {
     background-color: black;
     color: #9DC88D;
@@ -36,6 +50,7 @@ li {
     margin-left: 30px;
     margin-bottom: 8px;
     color: #5d9bec;
+    font-family: cursive;
     font-size: 20px;
     word-spacing: 3px;
     margin-top: 5px;
@@ -49,6 +64,7 @@ ul {
     margin-bottom: 8px;
     color: #5d9bec;
     font-size: 20px;
+    font-family: cursive;
     word-spacing: 3px;
     margin-top: 5px;
     cursor: pointer;
@@ -75,6 +91,28 @@ p {
     font-size: 18px;
 }
 
+.hero-search {
+    margin-left: 30px;
+}
+
+label {
+    color: #5d9bec;
+    display: inline-block;
+    clear: left;
+    width: 160px;
+    text-align: left;
+    margin-left: 30px;
+    font-family: cursive;    
+}
+
+input {
+  display: inline-block;
+  text-decoration: black;
+  font-weight: bolder;
+  background-color:rgb(203, 203, 241);
+  font-size: 18px;
+}
+
 button {
     font-family: cursive;
     display: inline-block;
@@ -94,3 +132,9 @@ button:hover {
     background-color: #e05dec;
     cursor: pointer;
 }
+
+.edit-buttons {
+    margin-left: 30px;
+    margin-right: 50px;
+}
+
